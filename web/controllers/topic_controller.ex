@@ -25,7 +25,10 @@ defmodule Discuss.TopicController do
 
 
     case Repo.insert(changeset) do
-      {:ok, post} -> IO.inspect(post)
+      {:ok, post} ->
+        conn
+        |> put_flash(:info, "Topic Created") #put_flash is how we show ONE TIME messages to the user
+        |> redirect(to: topic_path(conn, :index))
       {:error, changeset} ->
         render conn, "new.html", changeset: changeset
     end
