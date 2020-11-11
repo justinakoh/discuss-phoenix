@@ -3,10 +3,18 @@ defmodule Discuss.TopicController do
 
   alias Discuss.Topic
 
-  def new(conn, params) do
+  def new(conn, _params) do
     changeset = Topic.changeset(%Topic{}, %{})
 
     render conn, "new.html", changeset: changeset
+  end
+
+  # This gets the records out from the database
+  def index(conn, _params) do
+    topics = Repo.all(Topic)
+
+    # Specifying which template we want to render
+    render conn, "index.html", topics: topics
   end
 
   # When things are being posted: here we want to handle both cases where things are successful and also where there is an error
