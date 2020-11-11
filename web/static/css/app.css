@@ -1,1 +1,13 @@
 /* This file is for your main application css. */
+/* Styling for the error page */
+.help-block {
+  color: red;
+  text-transform: capitalize;
+  position: absolute;
+  top: 37px;
+}
+
+.form-group{
+  position: relative;
+  margin-bottom: 25px;
+}
