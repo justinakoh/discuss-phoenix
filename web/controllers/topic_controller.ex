@@ -35,4 +35,11 @@ defmodule Discuss.TopicController do
 
   end
 
+  def edit(conn, %{"id" => topic_id}) do
+    topic = Repo.get(Topic, topic_id) #This pulls the existing thing from the database
+    changeset = Topic.changeset(topic) #WE then make a chageset with the stuff that came out of teh database
+
+    render conn, "edit.html", changeset: changeset, topic: topic
+  end
+
 end
