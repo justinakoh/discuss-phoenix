@@ -47,6 +47,7 @@ defmodule Discuss.TopicController do
     old_topic = Repo.get(Topic, topic_id)
     changeset = Repo.get(Topic, topic_id) |> Topic.changeset(topic)
 
+    # You will see this over and over again in all sorts of different code
     case Repo.update(changeset) do
       {:ok, _topic} ->
         conn
@@ -55,6 +56,14 @@ defmodule Discuss.TopicController do
       {:error, changeset} ->
         render conn, "edit.html", changeset: changeset, topic: old_topic
     end
+  end
+
+  def delete(conn, %{"id" => topic_id}) do
+    Repo.get!(Topic, topic_id) |> Repo.delete!
+
+    conn
+    |> put_flash(:info, "Topic Deleted")
+    |> redirect(to: topic_path(conn, :index))
   end
 
 end
