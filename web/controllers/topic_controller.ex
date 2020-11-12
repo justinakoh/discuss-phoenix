@@ -25,7 +25,7 @@ defmodule Discuss.TopicController do
 
 
     case Repo.insert(changeset) do
-      {:ok, post} ->
+      {:ok, _topic} ->
         conn
         |> put_flash(:info, "Topic Created") #put_flash is how we show ONE TIME messages to the user
         |> redirect(to: topic_path(conn, :index))
@@ -40,6 +40,20 @@ defmodule Discuss.TopicController do
     changeset = Topic.changeset(topic) #WE then make a chageset with the stuff that came out of teh database
 
     render conn, "edit.html", changeset: changeset, topic: topic
+  end
+
+
+  def update(conn, %{"id" => topic_id, "topic" => topic}) do
+    changeset = Repo.get(Topic, topic_id) |> Topic.changeset(topic)
+
+    case Repo.update(changeset) do
+      {:ok, _topic} ->
+        conn
+        |> put_flash(:info, "Topic Created") #put_flash is how we show ONE TIME messages to the user
+        |> redirect(to: topic_path(conn, :index))
+      {:error, changeset} ->
+        render conn, "edit.html", changeset: changeset
+    end
   end
 
 end
