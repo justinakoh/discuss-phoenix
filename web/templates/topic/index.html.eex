@@ -4,7 +4,7 @@
   <!-- Loops thorough everything in thedatabase -->
   <%= for topic <- @topics do %>
     <li class="collection-item">
-      <%= topic.title %>
+      <%= link topic.title, to: topic_path(@conn, :show, topic) %>
 
 <!-- IF statement that only shoes the edit and delete button if the user created it -->
     <%= if @conn.assigns.user do %>

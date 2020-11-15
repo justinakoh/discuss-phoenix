@@ -6,6 +6,7 @@ defmodule Discuss.User do
     field :provider, :string
     field :token, :string
     has_many :topics, Discuss.Topic #a user has many topics, and it should use the Topic module to set  - makes Phoenix aware of the other tables
+    has_many :comments, Discuss.Comment
 
     timestamps()
   end

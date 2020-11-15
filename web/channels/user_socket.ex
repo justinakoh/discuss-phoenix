@@ -1,10 +1,10 @@
 defmodule Discuss.UserSocket do
   use Phoenix.Socket
 
-  ## Channels
-  # channel "room:*", Discuss.RoomChannel
+  ## Channels: (title of the channel, the module that it will be using)- kinda like subreddits / chat rooms
+  channel "comments:*", Discuss.CommentsChannel
 
-  ## Transports
+  ## Transports:
   transport :websocket, Phoenix.Transports.WebSocket
   # transport :longpoll, Phoenix.Transports.LongPoll
 
@@ -19,6 +19,8 @@ defmodule Discuss.UserSocket do
   #
   # See `Phoenix.Token` documentation for examples in
   # performing token verification on connect.
+
+  # This is called whenever a new javascript client connects to the Phoeni server with the websockets
   def connect(_params, socket) do
     {:ok, socket}
   end

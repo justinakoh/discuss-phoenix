@@ -83,6 +83,11 @@ defmodule Discuss.TopicController do
       |> redirect(to: topic_path(conn, :index))
       |> halt()
     end
-
   end
+
+  def show(conn, %{"id" => topic_id}) do
+    topic = Repo.get!(Topic, topic_id) #Bang (!) throws an error if it can't find it
+    render conn, "show.html", topic: topic
+  end
+
 end
