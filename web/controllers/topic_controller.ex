@@ -11,6 +11,7 @@ defmodule Discuss.TopicController do
 
   # This gets the records out from the database
   def index(conn, _params) do
+    IO.inspect(conn.assigns)
     topics = Repo.all(Topic)
 
     # Specifying which template we want to render
