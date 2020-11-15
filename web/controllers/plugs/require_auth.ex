@@ -10,7 +10,7 @@ defmodule Discuss.Plugs.RequireAuth do
   #This is called after init.
   # This returns conn as it the next thing to do after this is assign/3
   def call(conn, _params) do
-# User is signed in,return the conn so that they can do other actions
+  # User is signed in,return the conn so that they can do other actions
     if conn.assigns[:user] do
       conn
       # Not signed in, don't let them do much

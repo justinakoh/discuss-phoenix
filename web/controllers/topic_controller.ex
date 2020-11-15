@@ -23,11 +23,11 @@ defmodule Discuss.TopicController do
 
   # When things are being posted: here we want to handle both cases where things are successful and also where there is an error
   def create(conn, %{"topic" => topic}) do
-    # this is the change that we want to make to our database:as we are creating something new we pass in an empty struct i.e. %Topic{}
-    # If we were going to edit something we would pass in a struct with a title and id
-    changeset = Topic.changeset(%Topic{}, topic)
+    changeset = conn.assigns.user   #This gets the current user off the current object
+      |> build_assoc(:topics)       #Pipes current user into here. This makes a topic struct
+      |> Topic.changeset(topic)     #Struct passed in. Has a reference to the current user - so the thing that gets created has a reference to the current user
 
-
+    #Puts it into the database
     case Repo.insert(changeset) do
       {:ok, _topic} ->
         conn
