@@ -7,7 +7,7 @@ defmodule Discuss.CommentsChannel do
     topic_id = String.to_integer(topic_id)
     topic = Topic
       |> Repo.get(topic_id)       #Find a TOPIC with the given topic_id
-      |> Repo.preload(:comments)  #When you find that topic, go to the collection database and find every topic ID with the previuos found ID
+      |> Repo.preload(comments: [:user])  #When you find that topic, go to the collection database and find every topic ID with the previuos found ID
 
     # we want to return all the other comments that have been added to that topic
     {:ok, %{comments: topic.comments}, assign(socket, :topic, topic)}
@@ -15,9 +15,10 @@ defmodule Discuss.CommentsChannel do
 
   def handle_in(name, %{"content" => content}, socket) do
     topic = socket.assigns.topic
+    user_id = socket.assigns.user_id
 
     changeset = topic
-      |> build_assoc(:comments)
+      |> build_assoc(:comments, user_id: user_id)
       |> Comment.changeset(%{content: content})
 
     case Repo.insert(changeset) do

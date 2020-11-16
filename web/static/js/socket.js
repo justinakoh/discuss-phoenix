@@ -5,7 +5,7 @@
 // and connect at the socket path in "lib/my_app/endpoint.ex":
 import {Socket} from "phoenix"
 
-let socket = new Socket("/socket", {params: {token: window.userToken}}) //This creates a new instance of a socket
+let socket = new Socket("/socket", { params: { token: window.userToken } }) //This creates a new instance of a socket
 
 // When you connect, you'll often need to authenticate the client.
 // For example, imagine you have an authentication plug, `MyAuth`,
@@ -60,6 +60,8 @@ const createSocket = (topicId) => {
   channel
     .join()
     .receive("ok", resp => {
+      console.log("")
+      console.log(resp)
       // Renders the comments stored
       renderComments(resp.comments)
     })
@@ -91,9 +93,17 @@ function renderComment(event){
 }
 
 function commentTemplate(comment){
+  let email = 'Anonymous';
+  if (comment.user){
+    email = comment.user.email;
+  }
+
   return `
     <li class="collection-item">
       ${comment.content}
+      <div class="secondary-content">
+        ${email}
+      </div>
     </li>
   `
   ;

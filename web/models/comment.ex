@@ -2,7 +2,7 @@ defmodule Discuss.Comment do
   use Discuss.Web, :model
 
   # Tells the poison encoder to just look at the content field
-  @derive {Poison.Encoder, only: [:content]}
+  @derive {Poison.Encoder, only: [:content, :user]}
 
   schema "comments" do
     field :content, :string
