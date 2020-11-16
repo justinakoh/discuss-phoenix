@@ -5,10 +5,12 @@ defmodule Discuss.CommentsChannel do
   # <> is how we join strings together in Elixir. IN this case we use it with pattern matching to get the correct id
   def join("comments:" <> topic_id, _params, socket) do
     topic_id = String.to_integer(topic_id)
-    topic = Repo.get(Topic, topic_id)
-    {:ok, %{}, assign(socket, :topic, topic)}
+    topic = Topic
+      |> Repo.get(topic_id)       #Find a TOPIC with the given topic_id
+      |> Repo.preload(:comments)  #When you find that topic, go to the collection database and find every topic ID with the previuos found ID
 
-    # {:ok, %{my_header: "my_reply"}, assign(socket, :topic, topic)}
+    # we want to return all the other comments that have been added to that topic
+    {:ok, %{comments: topic.comments}, assign(socket, :topic, topic)}
   end
 
   def handle_in(name, %{"content" => content}, socket) do
@@ -17,9 +19,6 @@ defmodule Discuss.CommentsChannel do
     changeset = topic
       |> build_assoc(:comments)
       |> Comment.changeset(%{content: content})
-      IO.inspect("++++++++++++++++++++++++++++++++++++++++++++")
-      IO.inspect(changeset)
-      IO.inspect("++++++++++++++++++++++++++++++++++++++++++++")
 
     case Repo.insert(changeset) do
       {:ok, comment} ->
