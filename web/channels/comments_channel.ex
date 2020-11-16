@@ -22,6 +22,11 @@ defmodule Discuss.CommentsChannel do
 
     case Repo.insert(changeset) do
       {:ok, comment} ->
+        #This updates the latest / just submitted comment onto the screen
+        broadcast!(
+          socket, "comments:#{socket.assigns.topic.id}:new",
+          %{comment: comment
+        })
         {:reply, :ok, socket}
       {:error, _reason} ->
         {:reply, {:error, %{errors: changeset}}, socket}
